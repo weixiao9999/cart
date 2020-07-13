@@ -37,8 +37,6 @@ public class OrderService {
 
     /**
      * 该方法用于结算购物车。
-     * <p>首先对用户Id进行判断，如果不存在，返回false。然后插入订单，并遍历购物车。
-     * 最后将购物车中的商品插入到OrderItem表中，每次插入时对库存和购买数量进行比较，如果购买数量大于库存，回滚所有事务，返回false。</p>
      * @param userId 用户Id
      * @return 结算是否成功
      */
@@ -53,12 +51,15 @@ public class OrderService {
         Iterator<Long> cartIt = cart.keySet().iterator();
         Goods goods = null;
 
+        //插入订单
         order.setUserId(userId);
         orderMapper.insert(order);
 
+        //插入OrderItem,修改商品库存
         while (cartIt.hasNext()) {
             goods = cart.get(cartIt.next());
             if (goods.getNumber() > goods.getTotal()) {
+                //回滚事务
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return false;
             }
