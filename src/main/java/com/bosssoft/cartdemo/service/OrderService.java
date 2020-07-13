@@ -1,88 +1,25 @@
 package com.bosssoft.cartdemo.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.bosssoft.cartdemo.dao.OrderItemMapper;
-import com.bosssoft.cartdemo.dao.OrderMapper;
-import com.bosssoft.cartdemo.entity.Goods;
 import com.bosssoft.cartdemo.entity.Order;
-import com.bosssoft.cartdemo.entity.OrderItem;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import javax.annotation.Resource;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author hujierong
- * @date 2020-7-10
+ * @date 2020-7-13
  */
-@Service
-public class OrderService {
-
-    @Autowired
-    CartService cartService;
-
-    @Autowired
-    GoodsService goodsService;
-
-    @Resource
-    OrderMapper orderMapper;
-
-    @Resource
-    OrderItemMapper itemMapper;
+public interface OrderService {
 
     /**
      * 该方法用于结算购物车。
      * @param userId 用户Id
      * @return 结算是否成功
      */
-    @Transactional(rollbackFor = Exception.class)
-    public boolean settleCart (Long userId) {
-        if (userId == null) {
-            return false;
-        }
-        Order order = new Order();
-        OrderItem item = null;
-        Map<Long, Goods> cart = cartService.getCart();
-        Iterator<Long> cartIt = cart.keySet().iterator();
-        Goods goods = null;
-
-        //插入订单
-        order.setUserId(userId);
-        orderMapper.insert(order);
-
-        //插入OrderItem,修改商品库存
-        while (cartIt.hasNext()) {
-            goods = cart.get(cartIt.next());
-            if (goods.getNumber() > goods.getTotal()) {
-                //回滚事务
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return false;
-            }
-            goods.setTotal(goods.getTotal() - goods.getNumber());
-            goodsService.updateGoods(goods);
-
-            item = new OrderItem();
-            item.setGoodsId(goods.getGoodsId());
-            item.setOrderId(order.getOrderId());
-            item.setNumber(goods.getNumber());
-            itemMapper.insert(item);
-        }
-
-        return true;
-    }
+    boolean settleCart (Long userId);
 
     /**
      * 该方法用于获取订单列表。
      * @return 订单列表
      */
-    public List<Order> getOrderList() {
-        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Order::getUserId, cartService.getUserId());
-        return orderMapper.selectOrders(queryWrapper);
-    }
+    List<Order> getOrderList();
 }
