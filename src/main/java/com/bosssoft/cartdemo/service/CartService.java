@@ -23,9 +23,13 @@ public class CartService {
     @Autowired
     private HttpSession session;
 
-    public void add(Goods goods) {
+    public boolean add(Goods goods) {
         getCart();
+        if (goods.getNumber() > goods.getTotal()) {
+            return false;
+        }
         mycart.put(goods.getGoodsId(), goods);
+        return true;
     }
 
     public boolean edit(long goodsId, int number) {
