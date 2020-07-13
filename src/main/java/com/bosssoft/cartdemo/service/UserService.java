@@ -21,6 +21,12 @@ public class UserService {
     @Autowired
     private HttpSession session;
 
+    /**
+     * 该方法用于验证用户登录的用户名和密码是否一致。
+     * @param userName 用户名
+     * @param password 密码
+     * @return 验证是否正确
+     */
     public boolean validateUser(String userName, String password) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(User::getUserName, userName);
