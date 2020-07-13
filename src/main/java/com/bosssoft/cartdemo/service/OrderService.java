@@ -8,6 +8,7 @@ import com.bosssoft.cartdemo.entity.Order;
 import com.bosssoft.cartdemo.entity.OrderItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Iterator;
@@ -33,6 +34,7 @@ public class OrderService {
     @Resource
     OrderItemMapper itemMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean settleCart (Long userId) {
         if (userId == null) {
             return false;
