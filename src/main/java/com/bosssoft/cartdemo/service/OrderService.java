@@ -9,6 +9,7 @@ import com.bosssoft.cartdemo.entity.OrderItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.Iterator;
@@ -50,6 +51,10 @@ public class OrderService {
 
         while (cartIt.hasNext()) {
             goods = cart.get(cartIt.next());
+            if (goods.getNumber() > goods.getTotal()) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return false;
+            }
             goods.setTotal(goods.getTotal() - goods.getNumber());
             goodsService.updateGoods(goods);
 

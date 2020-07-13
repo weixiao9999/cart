@@ -25,9 +25,6 @@ public class CartService {
 
     public boolean add(Goods goods) {
         getCart();
-        if (goods.getNumber() > goods.getTotal()) {
-            return false;
-        }
         mycart.put(goods.getGoodsId(), goods);
         return true;
     }
@@ -35,7 +32,7 @@ public class CartService {
     public boolean edit(long goodsId, int number) {
         getCart();
         Goods goods = mycart.get(goodsId);
-        if (number > goods.getTotal()) {
+        if (goods == null) {
             return false;
         }
         goods.setNumber(number);
