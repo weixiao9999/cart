@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author hujierong
@@ -17,8 +16,6 @@ import java.util.Map;
  */
 @Service
 public class CartServiceImpl implements CartService {
-    private HashMap<Long, Goods> mycart;
-
     @Autowired
     OrderService orderService;
 
@@ -27,14 +24,14 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean add(Goods goods) {
-        getCart();
+        HashMap<Long, Goods> mycart = getCart();
         mycart.put(goods.getGoodsId(), goods);
         return true;
     }
 
     @Override
     public boolean edit(long goodsId, int number) {
-        getCart();
+        HashMap<Long, Goods> mycart = getCart();
         Goods goods = mycart.get(goodsId);
         if (goods == null) {
             return false;
@@ -45,19 +42,19 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void remove(long goodsId) {
-        getCart();
+        HashMap<Long, Goods> mycart = getCart();
         mycart.remove(goodsId);
     }
 
     @Override
     public void clear() {
-        getCart();
+        HashMap<Long, Goods> mycart = getCart();
         mycart.clear();
     }
 
     @Override
     public String list() {
-        getCart();
+        HashMap<Long, Goods> mycart = getCart();
         return JSON.toJSONString(mycart.entrySet().toArray());
     }
 
@@ -76,8 +73,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Map<Long, Goods> getCart() {
-        mycart = (HashMap<Long, Goods>) session.getAttribute("mycart");
+    public HashMap<Long, Goods> getCart() {
+        HashMap<Long, Goods> mycart = (HashMap<Long, Goods>) session.getAttribute("mycart");
         if (mycart == null) {
             mycart = new HashMap<>();
             session.setAttribute("mycart", mycart);

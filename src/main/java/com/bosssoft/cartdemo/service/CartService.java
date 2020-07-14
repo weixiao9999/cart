@@ -2,7 +2,7 @@ package com.bosssoft.cartdemo.service;
 
 import com.bosssoft.cartdemo.entity.Goods;
 
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  * @author hujierong
@@ -58,5 +58,5 @@ public interface CartService {
      * 该方法用于获取购物车。
      * @return 购物车
      */
-    Map<Long, Goods> getCart();
+    HashMap<Long, Goods> getCart();
 }

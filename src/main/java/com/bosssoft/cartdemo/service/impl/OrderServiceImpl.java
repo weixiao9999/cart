@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author hujierong
@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
         }
         Order order = new Order();
         OrderItem item = null;
-        Map<Long, Goods> cart = cartService.getCart();
+        HashMap<Long, Goods> cart = cartService.getCart();
 
         //判断购物车是否为空
         if (cart.size() == 0) {
