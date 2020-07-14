@@ -9,6 +9,7 @@ import com.bosssoft.cartdemo.entity.OrderItem;
 import com.bosssoft.cartdemo.service.CartService;
 import com.bosssoft.cartdemo.service.GoodsService;
 import com.bosssoft.cartdemo.service.OrderService;
+import com.bosssoft.cartdemo.util.IdWorker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,8 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     OrderItemMapper itemMapper;
 
+    private IdWorker idWorker = new IdWorker(1, 1, 0);
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean settleCart (Long userId) {
@@ -62,6 +65,7 @@ public class OrderServiceImpl implements OrderService {
 
         //插入订单
         order.setUserId(userId);
+        order.setSn(String.valueOf(idWorker.nextId()));
         orderMapper.insert(order);
 
         //插入OrderItem,修改商品库存

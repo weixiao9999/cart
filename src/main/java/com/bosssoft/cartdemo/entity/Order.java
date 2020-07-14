@@ -20,6 +20,8 @@ public class Order {
 
     private Long userId;
 
+    private String sn;
+
     @TableField(exist = false)
     private List<OrderItem> items;
 }

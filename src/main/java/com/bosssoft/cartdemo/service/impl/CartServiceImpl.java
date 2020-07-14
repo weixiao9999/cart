@@ -80,7 +80,7 @@ public class CartServiceImpl implements CartService {
         if (myCart == null) {
             log.info("新建购物车");
             myCart = new HashMap<>();
-            session.setAttribute("mycart", myCart);
+            session.setAttribute("myCart", myCart);
         }
         return myCart;
     }
