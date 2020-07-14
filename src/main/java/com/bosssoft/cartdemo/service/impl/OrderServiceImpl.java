@@ -47,6 +47,12 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
         OrderItem item = null;
         Map<Long, Goods> cart = cartService.getCart();
+
+        //判断购物车是否为空
+        if (cart.size() == 0) {
+            return false;
+        }
+
         Iterator<Long> cartIt = cart.keySet().iterator();
         Goods goods = null;
 
