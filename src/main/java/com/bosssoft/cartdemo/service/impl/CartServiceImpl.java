@@ -26,14 +26,14 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void add(Goods goods) {
-        HashMap<Long, Goods> mycart = getCart();
-        mycart.put(goods.getGoodsId(), goods);
+        HashMap<Long, Goods> myCart = getCart();
+        myCart.put(goods.getGoodsId(), goods);
     }
 
     @Override
     public boolean edit(long goodsId, int number) {
-        HashMap<Long, Goods> mycart = getCart();
-        Goods goods = mycart.get(goodsId);
+        HashMap<Long, Goods> myCart = getCart();
+        Goods goods = myCart.get(goodsId);
         if (goods == null) {
             log.info("购物车不存在该商品");
             return false;
@@ -44,20 +44,20 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void remove(long goodsId) {
-        HashMap<Long, Goods> mycart = getCart();
-        mycart.remove(goodsId);
+        HashMap<Long, Goods> myCart = getCart();
+        myCart.remove(goodsId);
     }
 
     @Override
     public void clear() {
-        HashMap<Long, Goods> mycart = getCart();
-        mycart.clear();
+        HashMap<Long, Goods> myCart = getCart();
+        myCart.clear();
     }
 
     @Override
     public String list() {
-        HashMap<Long, Goods> mycart = getCart();
-        return JSON.toJSONString(mycart.entrySet().toArray());
+        HashMap<Long, Goods> myCart = getCart();
+        return JSON.toJSONString(myCart.entrySet().toArray());
     }
 
     @Override
@@ -76,13 +76,13 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public HashMap<Long, Goods> getCart() {
-        HashMap<Long, Goods> mycart = (HashMap<Long, Goods>) session.getAttribute("mycart");
-        if (mycart == null) {
+        HashMap<Long, Goods> myCart = (HashMap<Long, Goods>) session.getAttribute("myCart");
+        if (myCart == null) {
             log.info("新建购物车");
-            mycart = new HashMap<>();
-            session.setAttribute("mycart", mycart);
+            myCart = new HashMap<>();
+            session.setAttribute("mycart", myCart);
         }
-        return mycart;
+        return myCart;
     }
 
 }
