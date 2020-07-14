@@ -20,10 +20,8 @@ public class CartController {
 
     @PostMapping("/add")
     public String add(@RequestBody Goods goods) {
-        if (cartService.add(goods)) {
-            return "add goods: " + goods.getName();
-        }
-        return "add error";
+        cartService.add(goods);
+        return "add goods: " + goods.getName();
     }
 
     @PostMapping("/edit")

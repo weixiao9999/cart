@@ -13,9 +13,8 @@ public interface CartService {
     /**
      * 该方法用于往购物车中添加商品。
      * @param goods 商品
-     * @return 添加是否成功
      */
-    boolean add(Goods goods);
+    void add(Goods goods);
 
     /**
      * 该方法用于修改购物车中商品的数量。

@@ -9,6 +9,7 @@ import com.bosssoft.cartdemo.entity.OrderItem;
 import com.bosssoft.cartdemo.service.CartService;
 import com.bosssoft.cartdemo.service.GoodsService;
 import com.bosssoft.cartdemo.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import java.util.List;
  * @date 2020-7-10
  */
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -42,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = Exception.class)
     public boolean settleCart (Long userId) {
         if (userId == null) {
+            log.info("用户未登录");
             return false;
         }
         Order order = new Order();
@@ -50,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
 
         //判断购物车是否为空
         if (cart.size() == 0) {
+            log.info("购物车为空");
             return false;
         }
 
@@ -64,6 +68,7 @@ public class OrderServiceImpl implements OrderService {
         while (cartIt.hasNext()) {
             goods = cart.get(cartIt.next());
             if (goods.getNumber() > goods.getTotal()) {
+                log.info("库存不足");
                 //回滚事务
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return false;

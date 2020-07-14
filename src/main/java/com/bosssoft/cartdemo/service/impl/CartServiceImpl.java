@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.bosssoft.cartdemo.entity.Goods;
 import com.bosssoft.cartdemo.service.CartService;
 import com.bosssoft.cartdemo.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.HashMap;
  * @date 2020-7-9
  */
 @Service
+@Slf4j
 public class CartServiceImpl implements CartService {
     @Autowired
     OrderService orderService;
@@ -23,10 +25,9 @@ public class CartServiceImpl implements CartService {
     private HttpSession session;
 
     @Override
-    public boolean add(Goods goods) {
+    public void add(Goods goods) {
         HashMap<Long, Goods> mycart = getCart();
         mycart.put(goods.getGoodsId(), goods);
-        return true;
     }
 
     @Override
@@ -34,6 +35,7 @@ public class CartServiceImpl implements CartService {
         HashMap<Long, Goods> mycart = getCart();
         Goods goods = mycart.get(goodsId);
         if (goods == null) {
+            log.info("购物车不存在该商品");
             return false;
         }
         goods.setNumber(number);
@@ -76,6 +78,7 @@ public class CartServiceImpl implements CartService {
     public HashMap<Long, Goods> getCart() {
         HashMap<Long, Goods> mycart = (HashMap<Long, Goods>) session.getAttribute("mycart");
         if (mycart == null) {
+            log.info("新建购物车");
             mycart = new HashMap<>();
             session.setAttribute("mycart", mycart);
         }

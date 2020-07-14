@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bosssoft.cartdemo.dao.UserMapper;
 import com.bosssoft.cartdemo.entity.User;
 import com.bosssoft.cartdemo.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
  * @date 2020-7-9
  */
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
@@ -28,11 +30,13 @@ public class UserServiceImpl implements UserService {
         queryWrapper.lambda().eq(User::getUserName, userName);
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
+            log.info("用户不存在");
             return false;
         } else if (password.equals(user.getPassword())) {
             session.setAttribute("userId", user.getUserId());
             return true;
         }
+        log.info("密码不正确");
         return false;
     }
 }
