@@ -36,16 +36,10 @@ public interface CartService {
     void clear();
 
     /**
-     * 该方法用于展示购物车中的商品。
-     * @return 购物车map的字符串形式
-     */
-    String list();
-
-    /**
      * 该方法用于结算购物车。
      * @return 结算结果
      */
-    String settle();
+    boolean settle();
 
     /**
      * 该方法用于获取session中的userId。

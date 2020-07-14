@@ -1,13 +1,11 @@
 package com.bosssoft.cartdemo.controller;
 
-import com.bosssoft.cartdemo.entity.Goods;
+import com.bosssoft.cartdemo.dto.ResponseResult;
 import com.bosssoft.cartdemo.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @author hujierong
@@ -20,7 +18,7 @@ public class GoodsController {
     GoodsService goodsService;
 
     @PostMapping("/list")
-    public List<Goods> list() {
-        return goodsService.getGoodsList();
+    public ResponseResult list() {
+        return new ResponseResult(200, goodsService.getGoodsList());
     }
 }

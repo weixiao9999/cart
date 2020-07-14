@@ -1,5 +1,6 @@
 package com.bosssoft.cartdemo.controller;
 
+import com.bosssoft.cartdemo.dto.ResponseResult;
 import com.bosssoft.cartdemo.entity.Goods;
 import com.bosssoft.cartdemo.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,38 +20,41 @@ public class CartController {
     CartService cartService;
 
     @PostMapping("/add")
-    public String add(@RequestBody Goods goods) {
+    public ResponseResult add(@RequestBody Goods goods) {
         cartService.add(goods);
-        return "add goods: " + goods.getName();
+        return new ResponseResult(200, "add goods: " + goods.getName());
     }
 
     @PostMapping("/edit")
-    public String edit(@RequestBody Goods goods) {
+    public ResponseResult edit(@RequestBody Goods goods) {
         if (cartService.edit(goods.getGoodsId(), goods.getNumber())) {
-            return "edit goods: " + goods.getName() + " number to " + goods.getNumber();
+            return new ResponseResult(200, "edit goods: " + goods.getName() + " number to " + goods.getNumber());
         }
-        return "edit error! ";
+        return new ResponseResult(601, "edit error! ");
     }
 
     @PostMapping("/remove")
-    public String remove(@RequestBody Goods goods) {
+    public ResponseResult remove(@RequestBody Goods goods) {
         cartService.remove(goods.getGoodsId());
-        return "remove goods: " + goods.getName();
+        return new ResponseResult(200, "remove goods: " + goods.getName());
     }
 
     @PostMapping("/clear")
-    public String remove() {
+    public ResponseResult remove() {
         cartService.clear();
-        return "clear goods! ";
+        return new ResponseResult(200, "clear goods! ");
     }
 
     @PostMapping("/list")
-    public String list() {
-        return cartService.list();
+    public ResponseResult list() {
+        return new ResponseResult(200, cartService.getCart());
     }
 
     @PostMapping("/settle")
-    public String settle() {
-        return cartService.settle();
+    public ResponseResult settle() {
+        if (cartService.settle()) {
+            return new ResponseResult(200, "Cart Service Settled");
+        }
+        return new ResponseResult(602, "settle error! ");
     }
 }

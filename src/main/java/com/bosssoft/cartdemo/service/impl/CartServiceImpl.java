@@ -1,6 +1,5 @@
 package com.bosssoft.cartdemo.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.bosssoft.cartdemo.entity.Goods;
 import com.bosssoft.cartdemo.service.CartService;
 import com.bosssoft.cartdemo.service.OrderService;
@@ -55,18 +54,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public String list() {
-        HashMap<Long, Goods> myCart = getCart();
-        return JSON.toJSONString(myCart.entrySet().toArray());
-    }
-
-    @Override
-    public String settle() {
+    public boolean settle() {
         if (orderService.settleCart(getUserId())){
             clear();
-            return "Cart Service Settled";
+            return true;
         }
-        return "error";
+        return false;
     }
 
     @Override

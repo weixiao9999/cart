@@ -1,5 +1,6 @@
 package com.bosssoft.cartdemo.controller;
 
+import com.bosssoft.cartdemo.dto.ResponseResult;
 import com.bosssoft.cartdemo.entity.User;
 import com.bosssoft.cartdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,10 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public ResponseResult login(@RequestBody User user) {
         if (userService.validateUser(user.getUserName(), user.getPassword())) {
-            return "login success";
+            return new ResponseResult(200, "Login successful");
         }
-        return "error";
+        return new ResponseResult(600, "Wrong user name or password");
     }
 }
