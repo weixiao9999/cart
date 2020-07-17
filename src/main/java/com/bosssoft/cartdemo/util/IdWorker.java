@@ -80,7 +80,7 @@ public class IdWorker {
         if (datacenterId > maxDatacenterId || datacenterId < 0) {
             throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0",maxDatacenterId));
         }
-        log.info("worker starting. timestamp left shift {}, datacenter id bits {}, worker id bits {}, sequence bits {}, workerid {}",
+        log.debug("worker starting. timestamp left shift {}, datacenter id bits {}, worker id bits {}, sequence bits {}, workerid {}",
                 timestampLeftShift, datacenterIdBits, workerIdBits, sequenceBits, workerId);
 
         this.workerId = workerId;
@@ -113,7 +113,7 @@ public class IdWorker {
 
         // 获取当前时间戳，如果小于上次时间戳，则系统时间获取出现问题
         if (timestamp < lastTimestamp) {
-            log.info("clock is moving backwards.  Rejecting requests until {}.", lastTimestamp);
+            log.debug("clock is moving backwards.  Rejecting requests until {}.", lastTimestamp);
             throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds",
                     lastTimestamp - timestamp));
         }

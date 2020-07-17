@@ -34,7 +34,7 @@ public class CartServiceImpl implements CartService {
         HashMap<Long, Goods> myCart = getCart();
         Goods goods = myCart.get(goodsId);
         if (goods == null) {
-            log.info("购物车不存在该商品");
+            log.debug("购物车不存在该商品");
             return false;
         }
         goods.setNumber(number);
@@ -71,7 +71,7 @@ public class CartServiceImpl implements CartService {
     public HashMap<Long, Goods> getCart() {
         HashMap<Long, Goods> myCart = (HashMap<Long, Goods>) session.getAttribute("myCart");
         if (myCart == null) {
-            log.info("新建购物车");
+            log.debug("新建购物车");
             myCart = new HashMap<>();
             session.setAttribute("myCart", myCart);
         }

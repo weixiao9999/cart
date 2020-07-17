@@ -30,13 +30,13 @@ public class UserServiceImpl implements UserService {
         queryWrapper.lambda().eq(User::getUserName, userName);
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
-            log.info("用户不存在");
+            log.debug("用户不存在");
             return false;
         } else if (password.equals(user.getPassword())) {
             session.setAttribute("userId", user.getUserId());
             return true;
         }
-        log.info("密码不正确");
+        log.debug("密码不正确");
         return false;
     }
 }

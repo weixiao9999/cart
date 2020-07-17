@@ -72,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
         while (cartIt.hasNext()) {
             goods = cart.get(cartIt.next());
             if (goods.getNumber() > goods.getTotal()) {
-                log.info("库存不足");
+                log.debug("库存不足");
                 //回滚事务
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return false;
